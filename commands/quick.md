@@ -1,47 +1,69 @@
-# /foresight-engine:quick
+---
+description: Run a fast Foresight Engine signal pulse — validate query, collect live signals, score STEEEP matrix, and compute probability distribution. No scenario writing. Target under 60 seconds.
+---
 
-**Usage:** `/foresight-engine:quick [query]`
+Run the fast Foresight Engine signal pulse on: $ARGUMENTS
 
-Run a fast partial Foresight Engine pipeline. Target: under 60 seconds.
+**STEP 1 — VALIDATE INPUT**
 
-## What this command does
+Run: `python D:/Claude/foresight-engine/src/input_validator.py "$ARGUMENTS"`
 
-Runs Steps 1–4 + Step 6 only:
-1. Validates your query (Step 1)
-2. Collects signals via web search (Step 2)
-3. Scores signals (Step 3)
-4. Builds STEEEP × Temporal matrix (Step 4)
-5. Computes probabilities and confidence (Step 6)
-
-**Does NOT run:**
-- Historical analogue search (Step 5)
-- Scenario writing (Step 7)
-- Full report assembly (Step 8)
-
-## Output
-
-Signal Pulse section only:
-- Supporting / Opposing / Wildcard signal counts
-- Net direction
-- Hot zone identification
-- Probability distribution (Probable / Plausible / Possible %)
-- Confidence score
-
-No scenarios written. No full report.
-
-## When to use
-
-- Initial signal check before deep analysis
-- Quick gut-check on a topic
-- When you need signal direction fast
-
-## Examples
-
+If `valid` is false, display the rejection and stop:
 ```
-/foresight-engine:quick "Will Indian fintech dominate SEA by 2030?"
-/foresight-engine:quick "Is quantum computing a near-term threat to encryption?"
+INVALID QUERY
+Rule failed: [rule_failed]
+Reason: [failure_reason]
+Suggestion: [scope_note]
 ```
 
-## Agent
+**STEP 2 — COLLECT SIGNALS**
 
-Uses: `foresight-analyst` agent in abbreviated mode (Steps 1–4 + 6 only).
+Use web_search to collect 12+ signals about: $ARGUMENTS
+
+Run 4 searches:
+1. Current state and recent data
+2. Supporting trends
+3. Opposing signals and headwinds
+4. Policy and market signals
+
+Classify each signal with `signal_type` (SUPPORTING/OPPOSING/WILDCARD), `steeep_category`, `temporal_layer`, `source`, `date`, `evidence_type`.
+
+Write to `D:/Claude/foresight-engine/signals.json`.
+
+**STEP 3 — SCORE SIGNALS**
+
+Run: `python D:/Claude/foresight-engine/src/signal_scorer.py D:/Claude/foresight-engine/signals.json`
+
+**STEP 4 — BUILD MATRIX**
+
+Run: `python D:/Claude/foresight-engine/src/matrix_builder.py D:/Claude/foresight-engine/scored_signals.json`
+
+**STEP 6 — COMPUTE PROBABILITIES**
+
+Run: `python D:/Claude/foresight-engine/src/probability_calc.py D:/Claude/foresight-engine/scored_signals.json D:/Claude/foresight-engine/analogues.json`
+
+(Use empty analogues.json: `[]` if not present)
+
+**OUTPUT — SIGNAL PULSE ONLY**
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FORESIGHT ENGINE — QUICK PULSE
+[query]
+Confidence: [confidence]/100 | Signals: [n] | [date]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SIGNAL PULSE
+Supporting [n] [bar] | Opposing [n] [bar] | Wild [n]
+Net: [direction]
+Hot zone: [hottest_cell]
+
+PROBABILITY DISTRIBUTION
+■ PROBABLE  [pct%] [bar]
+■ PLAUSIBLE [pct%] [bar]
+■ POSSIBLE  [pct%] [bar]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Run /foresight-engine:analyze for full scenarios and decision guidance.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
