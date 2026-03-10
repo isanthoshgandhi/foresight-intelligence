@@ -1,0 +1,10 @@
+{
+  "name": "foresight-engine",
+  "version": "1.2.0",
+  "description": "AI-powered strategic foresight engine. Augments Claude with structured IFTF-inspired methodology. Validates queries, collects live signals via web search, scores a STEEEP x Temporal matrix, identifies historical analogues, computes scenario probabilities, and produces crisp four-scenario intelligence reports with decision guidance.",
+  "author": "Santhosh Gandhi",
+  "commands": ["analyze", "quick", "region"],
+  "agents": ["foresight-analyst"],
+  "hooks": ["SessionStart"],
+  "requires": ["web_search", "web_fetch"]
+}

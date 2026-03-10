@@ -1,0 +1,62 @@
+{
+  "query": "Will EVs dominate Indian cities by 2032?",
+  "date": "2026-03-10",
+  "confidence": 62,
+  "signal_counts": {
+    "SUPPORTING": 11,
+    "OPPOSING": 4,
+    "NEUTRAL": 2,
+    "WILDCARD": 2,
+    "total": 19
+  },
+  "net_direction": "SUPPORTING",
+  "hottest_cell": "Technological/Strategic",
+  "blind_zones": [
+    "Ethical/Civilizational",
+    "Environmental/Operational"
+  ],
+  "historical_match": {
+    "name": "South Korea EV rollout 2016-2022",
+    "similarity": 78.0,
+    "tipping_incident": "2019 Hyundai IONIQ subsidy tripling caused 300% YoY EV sales jump"
+  },
+  "probabilities": {
+    "probable": 54.2,
+    "plausible": 31.7,
+    "possible": 14.1
+  },
+  "scenarios": {
+    "probable": {
+      "name": "Gradual EV Dominance",
+      "description": "EV adoption reaches 30% market share in Indian cities by 2032 driven by PLI subsidies and falling battery costs.",
+      "proof": "Battery prices fell 90% from $1,100/kWh in 2010 to $110/kWh in 2024; India PLI allocated ₹18,100 crore for EV ecosystem.",
+      "if_condition": "Central government maintains PLI subsidies and public charging mandate through 2028",
+      "but_condition": "If oil prices drop below $50/barrel for 24+ months and remove cost advantage"
+    },
+    "plausible": {
+      "name": "Fragmented Transition",
+      "description": "EV adoption splits sharply between top-10 cities (35% share) and tier-2 cities (under 5%) by 2032.",
+      "proof": "Only 2.5% overall EV penetration in 2024 against India's 2030 target of 30%; charging stations concentrated 80% in 6 metro cities.",
+      "if_condition": "Grid reliability improves in top-10 cities but rural electrification lags 4+ years behind",
+      "but_condition": "Charging infrastructure gap in 600 smaller cities and 4,000+ towns remains structurally unfilled by 2032"
+    },
+    "possible": {
+      "name": "Disruption-Accelerated Surge",
+      "description": "A fuel price shock or solid-state battery breakthrough triggers sudden 50% EV adoption in cities by 2030.",
+      "proof": "China's EV market share hit 35% in 18 months after 2022 subsidy shock; solid-state battery pilots achieved 500km range in 2024.",
+      "if_condition": "Oil price spikes above $150/barrel for 6+ months OR solid-state battery reaches commercial scale by 2028",
+      "but_condition": "India's grid cannot absorb sudden 10× EV load without major blackouts across metro areas"
+    },
+    "preferable": {
+      "name": "Coordinated Green Transition",
+      "description": "India achieves 40% EV penetration in cities by 2030 while building a clean grid and domestic cell manufacturing base.",
+      "proof": "Norway hit 80% EV market share by 2023 starting from under 1% in 2010 via coordinated free-parking, toll exemptions, and grid investment.",
+      "if_condition": "",
+      "but_condition": "",
+      "needs_condition": "Coordinated policy stack: PLI extension + mandatory charging infra in new construction + renewable grid buildout + local battery cell gigafactory",
+      "leverage": "Mandate EV-only two-wheelers from 2027 — they represent 70% of India's total vehicle parc and 85% of urban trips"
+    }
+  },
+  "one_thing": "The decisive variable is not EV demand — it is charging station density.\nIndians will buy EVs when they stop worrying about being stranded.\nDemand is already there; the infrastructure is the bottleneck.\nINCIDENT: Norway's 2013 free parking + charging policy drove 3× EV adoption jump in 12 months\nWATCH: India charging station permits issued per quarter (target: 10,000/quarter by 2027)\nIF YES → 30% EV penetration in cities by 2030\nIF NO  → EV growth stalls at 8% despite ₹50,000 crore in subsidy spend",
+  "india_adjusted": true
+}

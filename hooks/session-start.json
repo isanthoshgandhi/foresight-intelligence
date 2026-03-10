@@ -1,0 +1,6 @@
+{
+  "name": "SessionStart",
+  "event": "SessionStart",
+  "description": "Announces Foresight Engine availability at session start",
+  "content": "Foresight Engine v1.0 ready. Commands: /foresight-engine:analyze [query] | /foresight-engine:quick [query] | /foresight-engine:india [query]"
+}
