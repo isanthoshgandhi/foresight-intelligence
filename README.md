@@ -59,6 +59,72 @@ claude plugin list
 
 ---
 
+## Three-Environment Support
+
+Foresight Engine runs in three environments. Choose based on your setup and accuracy requirements.
+
+| Environment | File | When to Use |
+|---|---|---|
+| **Claude Code CLI** (plugin) | `CLAUDE.md` + `src/` | Full deterministic pipeline; exact reproducibility; contributing to the plugin |
+| **Claude.ai via MCP Server** | `mcp_server/server.py` | Using claude.ai or Claude Desktop with live Python arithmetic over stdio |
+| **Claude.ai Personal Skill** | `SKILL.md` | No local setup; exploratory analysis; approximate outputs acceptable |
+
+### Env 1 — Claude Code CLI
+
+Already documented above. Install with:
+
+```bash
+claude plugin add ./foresight-engine
+claude plugin list
+```
+
+See the Installation section above for full instructions.
+
+### Env 2 — Claude.ai via MCP Server
+
+Install the MCP dependency:
+
+```bash
+pip install -r mcp_server/requirements.txt
+```
+
+Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS, `%APPDATA%\Claude\claude_desktop_config.json` on Windows):
+
+```json
+{
+  "mcpServers": {
+    "foresight-engine": {
+      "command": "python",
+      "args": ["/ABSOLUTE/PATH/TO/foresight-engine/mcp_server/server.py"],
+      "env": {}
+    }
+  }
+}
+```
+
+Restart Claude Desktop after editing. See `mcp_server/README.md` for claude.ai web bridge instructions.
+
+### Env 3 — Claude.ai Personal Skill
+
+1. Open [claude.ai](https://claude.ai) → **Settings** → **Custom Skills** (or **Personal Instructions**)
+2. Upload or paste the contents of `SKILL.md`
+3. Save — Claude will now follow the full 8-step methodology for any foresight query
+
+No Python, no local setup required. Outputs are structurally identical to the plugin but probabilities are Claude's approximation, not computed ground truth.
+
+### Decision Guide
+
+```
+Need exact arithmetic reproducibility?  → Claude Code CLI or MCP Server
+No local setup, just want the report?   → Personal Skill
+Building on top of this for a team?     → MCP Server
+Contributing to the plugin?             → Claude Code CLI
+```
+
+> **Architecture note:** `mcp_server/server.py` imports directly from `src/` — updating `src/` automatically updates all three environments.
+
+---
+
 ## Usage
 
 ### `/foresight-engine:analyze` — Full pipeline
