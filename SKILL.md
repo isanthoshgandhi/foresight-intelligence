@@ -94,10 +94,10 @@ For each signal collected, classify all 6 attributes:
 
 | Attribute | Values |
 |---|---|
-| direction | supporting / opposing / wildcard |
+| direction | supporting / opposing / wildcard / neutral |
 | steeep_category | Social / Technological / Economic / Environmental / Ethical / Political |
-| temporal_layer | Operational (0-3 yr) / Strategic (3-10 yr) / Civilizational (10+ yr) |
-| source_type | primary (official data, peer-reviewed) / secondary (journalism, analysis) / opinion (commentary, prediction) |
+| temporal_layer | Operational (0-2 yr) / Strategic (2-10 yr) / Civilizational (10+ yr) |
+| source_type | primary (official/government data) / secondary (established news, industry reports) / opinion (commentary, prediction) |
 | recency_days | integer — days since published |
 | has_evidence | true (contains a number, date, or measurable fact) / false |
 
@@ -116,25 +116,30 @@ score = recency_weight × reliability_weight × type_weight × evidence_multipli
 Cap the result at 1.0. Round to 2 decimal places.
 
 **Recency weights (by recency_days):**
-- 0–30 days: 1.00
-- 31–90 days: 0.85
-- 91–180 days: 0.70
-- 181–365 days: 0.55
-- 365+ days: 0.40
+- 0–90 days: 1.00
+- 91–365 days: 0.80
+- 366–1095 days (1-3 yr): 0.60
+- 1095+ days (3+ yr): 0.40
+- unknown date: 0.50
 
 **Reliability weights (by source_type):**
-- primary: 1.00
-- secondary: 0.75
-- opinion: 0.50
+- primary (government/official): 1.00
+- established news (Reuters, Bloomberg, FT, ET): 0.90
+- industry report (McKinsey, Gartner, NASSCOM): 0.85
+- analyst commentary: 0.70
+- opinion/blog/social: 0.50
+- unknown: 0.40
 
 **Type weights (by direction):**
 - supporting: 1.00
-- opposing: 0.85
-- wildcard: 0.60
+- opposing: 1.00 (opposing evidence is equally important — never discount it)
+- neutral: 0.60
+- wildcard: 1.30 (high impact even if uncertain)
 
-**Evidence multiplier (by has_evidence):**
-- true: × 1.25
-- false: × 1.00
+**Evidence multiplier (by evidence_type):**
+- DATA or STATISTIC: × 1.20
+- EVENT or INCIDENT: × 1.00
+- ANALYSIS or OPINION: × 0.70 (default when unknown)
 
 Apply regional multipliers AFTER computing the base score:
 ```
