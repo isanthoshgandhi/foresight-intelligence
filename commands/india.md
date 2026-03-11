@@ -1,8 +1,7 @@
 ---
-description: >
-  Full pipeline with India multipliers foregrounded. Expands India Lens
-  section. Best for India-specific or India-impacted queries.
+description: "Full Foresight Engine pipeline with India multipliers foregrounded. Runs extra India-specific searches (RBI, SEBI, NITI Aayog, UPI/DPI, India vs China). Expands India Lens section with top multipliers, structural advantages, and local watch signals."
 argument-hint: "<your India-related forecasting question>"
+allowed-tools: Bash(python:*), WebSearch, WebFetch, Read, Write
 ---
 
 Run **Foresight Engine INDIA mode** on: $ARGUMENTS
