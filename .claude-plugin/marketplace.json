@@ -1,0 +1,14 @@
+{
+  "name": "Foresight Engine",
+  "description": "AI-powered strategic foresight engine using IFTF methodology for VC, startup, and market analysis.",
+  "author": "Santhosh Gandhi",
+  "version": "1.2.0",
+  "plugins": [
+    {
+      "name": "foresight-engine",
+      "path": ".",
+      "description": "AI-powered strategic foresight engine using IFTF methodology.",
+      "version": "1.2.0"
+    }
+  ]
+}
