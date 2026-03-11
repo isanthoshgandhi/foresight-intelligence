@@ -1,7 +1,30 @@
-# Foresight Engine
+# Foresight Engine — AI Strategic Foresight Plugin for Claude
 
-**Claude Code Plugin — v1.2.0**
-Author: Santhosh Gandhi | GitHub: [github.com/isanthoshgandhi](https://github.com/isanthoshgandhi)
+> **Four-scenario intelligence reports backed by live signals, historical analogues, and deterministic probability scoring.**
+> Built for VC due diligence, startup strategy, and market intelligence.
+
+[![Version](https://img.shields.io/badge/version-1.2.0-blue)](https://github.com/isanthoshgandhi/foresight-engine)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
+[![Tests](https://img.shields.io/badge/tests-174%20passing-brightgreen)](tests/)
+[![Claude Plugin](https://img.shields.io/badge/Claude-Plugin-orange)](https://claude.ai)
+
+**Author:** Santhosh Gandhi | [GitHub](https://github.com/isanthoshgandhi) | [isanthoshgandhi@gmail.com](mailto:isanthoshgandhi@gmail.com)
+
+---
+
+## Quick Start
+
+**Claude Code CLI:**
+```
+/plugin marketplace add isanthoshgandhi/foresight-engine
+/plugin install foresight-engine@isanthoshgandhi
+/foresight-engine:analyze "Will India produce a $50B SaaS company by 2035?"
+```
+
+**Cowork (personal plugin):** Download [`foresight-engine.plugin`](https://github.com/isanthoshgandhi/foresight-engine/releases) → Cowork → Plugins → Add Personal Plugin → Upload
+
+**Claude.ai (no install):** Paste [`SKILL.md`](SKILL.md) into Settings → Custom Skills
 
 ---
 
@@ -10,6 +33,12 @@ Author: Santhosh Gandhi | GitHub: [github.com/isanthoshgandhi](https://github.co
 Foresight Engine is a strategic intelligence plugin for Claude Code. Give it any real-world question about the future — a sector, a technology, a geopolitical shift — and it produces a structured four-scenario analysis backed by live signals, historical analogues, and deterministic probability scoring.
 
 It augments Claude's native capabilities with a structured methodology layer inspired by IFTF foresight practices (Futures Cone, STEEEP, Cross-Impact Analysis, Backcasting). The result is a crisp intelligence report you can act on.
+
+**Best for:**
+- VC deal screening and sector due diligence
+- Startup market timing and strategy validation
+- Policy and geopolitical scenario planning
+- Product market fit and competitive landscape analysis
 
 ---
 
@@ -47,48 +76,52 @@ This plugin has two layers that must **never** be confused:
 
 ## Installation
 
-```bash
-# Install locally
-claude plugin add ./foresight-engine
+### Option 1 — Claude Code CLI (Recommended)
 
-# Verify installation
-claude plugin list
+```bash
+# Add the plugin marketplace
+/plugin marketplace add isanthoshgandhi/foresight-engine
+
+# Install the plugin
+/plugin install foresight-engine@isanthoshgandhi
+
+# Verify
+/plugin list
 ```
 
-**Requirements:** Python 3.10+, pytest (for tests), git 2.x
+**Requirements:** Claude Code CLI, Python 3.10+
+
+### Option 2 — Cowork Personal Plugin
+
+Download the latest `foresight-engine.plugin` from [Releases](https://github.com/isanthoshgandhi/foresight-engine/releases), then:
+1. Open Cowork → Plugins → Add Personal Plugin
+2. Upload `foresight-engine.plugin`
+
+### Option 3 — Claude.ai Personal Skill (No install)
+
+1. Open [claude.ai](https://claude.ai) → **Settings** → **Custom Skills**
+2. Upload or paste the contents of [`SKILL.md`](SKILL.md)
+3. Save — Claude will follow the full 8-step methodology for any foresight query
+
+> **Note:** The Skill version uses Claude's approximation for arithmetic. For VC-grade reproducible outputs, use Option 1 or Option 2.
 
 ---
 
 ## Three-Environment Support
 
-Foresight Engine runs in three environments. Choose based on your setup and accuracy requirements.
+| Environment | Entry Point | Arithmetic | When to Use |
+|---|---|---|---|
+| **Claude Code CLI** (plugin) | `commands/` + `src/` | Python (exact) | Full reproducibility; VC/investment memos |
+| **Claude.ai via MCP Server** | `mcp_server/server.py` | Python (exact) | Claude Desktop with live Python over stdio |
+| **Claude.ai Personal Skill** | `SKILL.md` | LLM (approximate ±3%) | Exploratory analysis; no local setup |
 
-| Environment | File | When to Use |
-|---|---|---|
-| **Claude Code CLI** (plugin) | `CLAUDE.md` + `src/` | Full deterministic pipeline; exact reproducibility; contributing to the plugin |
-| **Claude.ai via MCP Server** | `mcp_server/server.py` | Using claude.ai or Claude Desktop with live Python arithmetic over stdio |
-| **Claude.ai Personal Skill** | `SKILL.md` | No local setup; exploratory analysis; approximate outputs acceptable |
-
-### Env 1 — Claude Code CLI
-
-Already documented above. Install with:
-
-```bash
-claude plugin add ./foresight-engine
-claude plugin list
-```
-
-See the Installation section above for full instructions.
-
-### Env 2 — Claude.ai via MCP Server
-
-Install the MCP dependency:
+### MCP Server Setup
 
 ```bash
 pip install -r mcp_server/requirements.txt
 ```
 
-Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS, `%APPDATA%\Claude\claude_desktop_config.json` on Windows):
+Add to Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS, `%APPDATA%\Claude\claude_desktop_config.json` on Windows):
 
 ```json
 {
@@ -102,32 +135,13 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
 }
 ```
 
-Restart Claude Desktop after editing. See `mcp_server/README.md` for claude.ai web bridge instructions.
-
-### Env 3 — Claude.ai Personal Skill
-
-1. Open [claude.ai](https://claude.ai) → **Settings** → **Custom Skills** (or **Personal Instructions**)
-2. Upload or paste the contents of `SKILL.md`
-3. Save — Claude will now follow the full 8-step methodology for any foresight query
-
-No Python, no local setup required. Outputs are structurally identical to the plugin but probabilities are Claude's approximation, not computed ground truth.
-
-### Decision Guide
-
-```
-Need exact arithmetic reproducibility?  → Claude Code CLI or MCP Server
-No local setup, just want the report?   → Personal Skill
-Building on top of this for a team?     → MCP Server
-Contributing to the plugin?             → Claude Code CLI
-```
-
-> **Architecture note:** `mcp_server/server.py` imports directly from `src/` — updating `src/` automatically updates all three environments.
+Restart Claude Desktop after editing. See [`mcp_server/README.md`](mcp_server/README.md) for claude.ai web bridge instructions.
 
 ---
 
-## Usage
+## Commands
 
-### `/foresight-engine:analyze` — Full pipeline
+### `/foresight-engine:analyze` — Full 8-step pipeline
 
 ```
 /foresight-engine:analyze "Will EVs dominate global cities by 2035?"
@@ -135,14 +149,14 @@ Contributing to the plugin?             → Claude Code CLI
 /foresight-engine:analyze "Will China surpass the US in AI by 2035?"
 ```
 
-### `/foresight-engine:quick` — Signal pulse only (fast)
+### `/foresight-engine:quick` — Signal pulse only (fast, ~60 seconds)
 
 ```
 /foresight-engine:quick "Will Indian fintech dominate SEA by 2030?"
 /foresight-engine:quick "Is quantum computing a near-term threat to encryption?"
 ```
 
-Runs Steps 1–4 + 6 only. No scenario writing. Target: under 60 seconds.
+Runs Steps 1–4 + 6 only. No scenario writing. Returns probability distribution and signal pulse.
 
 ### `/foresight-engine:region` — Full pipeline with expanded regional lens
 
@@ -150,6 +164,15 @@ Runs Steps 1–4 + 6 only. No scenario writing. Target: under 60 seconds.
 /foresight-engine:region "Will Indian B2B SaaS produce a $50B company by 2035?"
 /foresight-engine:region "Will European green tech lead global markets by 2030?"
 ```
+
+### `/foresight-engine:india` — Full pipeline with India-specific lens
+
+```
+/foresight-engine:india "Will UPI replace cash in Tier 3 Indian cities by 2030?"
+/foresight-engine:india "Will India's EV sector produce a global OEM by 2035?"
+```
+
+Adds extra searches: RBI, SEBI, NITI Aayog, UPI/DPI ecosystem, India vs China comparison.
 
 ---
 
@@ -241,7 +264,6 @@ The plugin applies regional multipliers to adjust signal scores for local struct
 3. Add the region to `context_map` in `get_multipliers()`
 4. Optionally add `CONTEXT_NOTES` dict for report annotations
 
-Example:
 ```python
 # contexts/japan.py
 MULTIPLIERS = {
@@ -252,7 +274,7 @@ MULTIPLIERS = {
 
 ---
 
-## Methodology Credits
+## Methodology
 
 Foresight Engine is inspired by established futures research methodologies:
 
@@ -277,7 +299,24 @@ cd foresight-engine
 pytest tests/ -v
 ```
 
-All 7 test files, 174 tests.
+7 test files, 174 tests covering all Python modules.
+
+---
+
+## Contributing
+
+1. Fork the repo and create a feature branch
+2. Follow the two-layer rule: Python for arithmetic, Claude for reasoning
+3. Add tests for any new Python module logic
+4. Submit a PR with a clear description
+
+To add a new region: see [Adding a New Regional Context](#adding-a-new-regional-context) above.
+
+---
+
+## License
+
+MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
@@ -285,4 +324,5 @@ All 7 test files, 174 tests.
 
 **Santhosh Gandhi**
 GitHub: [github.com/isanthoshgandhi](https://github.com/isanthoshgandhi)
+Email: [isanthoshgandhi@gmail.com](mailto:isanthoshgandhi@gmail.com)
 Plugin: [github.com/isanthoshgandhi/foresight-engine](https://github.com/isanthoshgandhi/foresight-engine)
