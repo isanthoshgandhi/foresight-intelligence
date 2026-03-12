@@ -18,6 +18,14 @@ Read exact stdout.
 - If `valid=false`: output the rejection message and **STOP**.
 - If `valid=true`: proceed to Step 2.
 
+**Year is NOT required.** If the query has no explicit year, infer the most reasonable horizon before Step 2:
+- Competitive race / market dominance → 3–10 years (Strategic)
+- Technology adoption → 5–15 years (Strategic)
+- Geopolitical / societal shift → 10–20 years (Civilizational)
+- Near-term company outcome → 2–5 years (Operational/Strategic)
+
+State the inferred horizon (e.g. "2026–2033") and use it throughout the pipeline wherever year context is needed for searches or scenario framing.
+
 ---
 
 ## STEP 2 — COLLECT SIGNALS (Claude)
@@ -273,7 +281,7 @@ The canonical output template is:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 FORESIGHT ENGINE
 [Query]
-Confidence: [X]/100 | Signals: [N] | [YYYY-MM-DD]
+Confidence: [X]/100 | Signals: [N] | Horizon: [YYYY–YYYY] | [YYYY-MM-DD]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 SIGNAL PULSE

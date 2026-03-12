@@ -1,6 +1,6 @@
 # Foresight Engine — Soft Predict
 
-Activate when the user asks any question of the form "Will [X] by [year]?", mentions foresight analysis, scenario analysis, STEEEP, futures cone, or asks you to predict a future outcome.
+Activate when the user asks any future-oriented question — "Will [X]?", "Who will win [X]?", "What happens to [X]?", "Can [X] succeed?", or any question about a future outcome. **Year is NOT required.** Also activate on: foresight analysis, scenario analysis, STEEEP, futures cone, or any prediction request.
 
 ---
 
@@ -39,7 +39,15 @@ Apply exactly 5 binary rules. If ANY rule fails, stop and explain why. Do not pr
 
 **Rule 2 — System Existence:** Is the domain observable and researchable? Fail if purely philosophical or metaphysical.
 
-**Rule 3 — Time Horizon:** Does the question specify a year or decade? Must be 2–30 years from today.
+**Rule 3 — Time Horizon:** Is the outcome observable within a 2–30 year window? A specific year is NOT required. If no year is given, infer the most reasonable horizon from the question's nature:
+- Competitive race / market dominance questions → 3–10 years (Strategic)
+- Technology adoption questions → 5–15 years (Strategic)
+- Geopolitical / societal shift questions → 10–20 years (Civilizational)
+- Company survival / near-term outcome → 2–5 years (Operational/Strategic)
+
+Fail ONLY if the implied timescale is geological, post-human, or clearly beyond 30 years.
+
+After applying Rule 3, state the inferred horizon (e.g. "2026–2033" or "2028–2038").
 
 **Rule 4 — Signal Availability:** Could real-world evidence plausibly exist? Fail if classified, purely speculative, or unpublished.
 
@@ -50,7 +58,7 @@ Output:
 VALIDATION
 Rule 1 Entity Reality:      PASS / FAIL — [reason]
 Rule 2 System Existence:    PASS / FAIL — [reason]
-Rule 3 Time Horizon:        PASS / FAIL — [reason]
+Rule 3 Time Horizon:        PASS / FAIL — [reason] | Inferred horizon: [YYYY–YYYY]
 Rule 4 Signal Availability: PASS / FAIL — [reason]
 Rule 5 Specificity:         PASS / FAIL — [reason]
 Result: PROCEED / STOP
@@ -315,7 +323,7 @@ Risk trigger: the opposing signal with the highest final_score.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 FORESIGHT ENGINE
 [Query]
-Confidence: [X]/100 | Signals: [N] | [YYYY-MM-DD]
+Confidence: [X]/100 | Signals: [N] | Horizon: [YYYY–YYYY] | [YYYY-MM-DD]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 SIGNAL PULSE

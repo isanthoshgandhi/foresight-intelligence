@@ -1,6 +1,6 @@
 # Foresight Engine
 
-> Strategic foresight engine using IFTF methodology. Two modes: **Soft Predict** (Claude-native, instant) and **Hard Predict** (deterministic Python chain, auditable). Structural drivers, cross-impact analysis, IFTF backcasting, four-scenario reports.
+> Strategic foresight engine using IFTF methodology. Two modes: **Soft Predict** (Claude-native, instant) and **Hard Predict** (deterministic Python chain, auditable). Structural drivers, cross-impact analysis, IFTF backcasting, four-scenario reports. **Year is optional** — ask any future question and the engine infers the right time horizon.
 >
 > **Author:** Santhosh Gandhi · **Version:** 2.0.0
 
@@ -8,14 +8,16 @@
 
 ## Try Asking
 
+Year is optional. The engine infers the right horizon from your question.
+
 ```
-■ Will Elon Musk become president of USA by 2032?
-■ Will India become the global AI leader by 2050?
-■ Who will win the AI race — OpenAI or Anthropic?
-■ Will UPI become Southeast Asia's default payment rail by 2028?
+■ Who will win — Google or Perplexity?
+■ Will OpenAI or Anthropic dominate the AI race?
+■ Will India become the global AI leader?
+■ Will crypto replace banks?
+■ Will remote work become permanent?
 ■ Will EVs dominate Indian cities by 2032?
-■ Will crypto replace banks by 2035?
-■ Will remote work become permanent by 2027?
+■ Will UPI become Southeast Asia's default payment rail by 2028?
 ■ Will Europe lead the green energy transition by 2035?
 ```
 
