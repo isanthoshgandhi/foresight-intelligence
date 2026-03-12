@@ -1,6 +1,6 @@
 ---
-description: Run a fast Foresight Engine signal pulse on a forecasting question. Validates query, collects live signals, scores the STEEEP matrix, and computes probability distribution. No scenario writing. Target under 60 seconds.
-argument-hint: "your forecasting question"
+description: "Get a fast read on any future question in under a minute — see how much evidence supports or opposes the outcome, with a quick probability estimate. Try: Will remote work become permanent by 2027? · Will India overtake China in manufacturing by 2030?"
+argument-hint: "e.g. Will remote work become permanent by 2027?"
 allowed-tools: Bash(python:*), WebSearch, WebFetch, Read, Write
 ---
 

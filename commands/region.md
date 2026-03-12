@@ -1,6 +1,6 @@
 ---
-description: Run the full Foresight Engine pipeline with an expanded regional lens. Auto-detects India, USA, Europe, or China from the query and surfaces regional multipliers, local structural advantages, and context notes in the report.
-argument-hint: "your forecasting question (mention a region)"
+description: "Full strategic forecast with deep regional context. Mention a region and get analysis shaped by what is structurally unique to that market. Try: Will US tech regulation fragment the internet by 2030? · Will Europe lead the green energy transition by 2035?"
+argument-hint: "e.g. Will US tech regulation fragment the internet by 2030?"
 allowed-tools: Bash(python:*), WebSearch, WebFetch, Read, Write
 ---
 

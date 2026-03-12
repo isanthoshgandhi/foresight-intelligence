@@ -1,6 +1,6 @@
 ---
-description: "Full Foresight Engine pipeline with India multipliers foregrounded. Runs extra India-specific searches (RBI, SEBI, NITI Aayog, UPI/DPI, India vs China). Expands India Lens section with top multipliers, structural advantages, and local watch signals."
-argument-hint: "<your India-related forecasting question>"
+description: "Full strategic forecast built specifically for India — includes extra research on Indian policy, UPI/DPI, startup ecosystem, and how India compares to global peers. Try: Will UPI become Southeast Asia's default payment rail by 2028? · Will India's EV market rival China by 2032?"
+argument-hint: "e.g. Will UPI become Southeast Asia's default payment rail by 2028?"
 allowed-tools: Bash(python:*), WebSearch, WebFetch, Read, Write
 ---
 

@@ -1,6 +1,6 @@
 ---
-description: Run the full Foresight Engine pipeline on a forecasting question. Validates the query, collects live signals via web search, scores a STEEEP matrix, finds historical analogues, computes probabilities, writes four scenarios (Probable/Plausible/Possible/Preferable), and outputs a complete intelligence report with decision guidance.
-argument-hint: "your forecasting question"
+description: "Get a full strategic forecast for any future question — 4 scenarios, probability scores, and a clear action recommendation. Try: Will EVs dominate Indian cities by 2032? · Will AI replace junior engineers by 2027? · Will crypto replace banks by 2035?"
+argument-hint: "e.g. Will EVs dominate Indian cities by 2032?"
 allowed-tools: Bash(python:*), WebSearch, WebFetch, Read, Write
 ---
 
