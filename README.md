@@ -1,30 +1,35 @@
 # Foresight Engine
 
-> AI-powered strategic foresight using IFTF methodology. Four-scenario intelligence reports backed by live signals, historical analogues, and deterministic probability scoring.
+> Strategic foresight engine using IFTF methodology. Two modes: **Soft Predict** (Claude-native, instant) and **Hard Predict** (deterministic Python chain, auditable). Structural drivers, cross-impact analysis, IFTF backcasting, four-scenario reports.
 >
-> **Author:** Santhosh Gandhi
+> **Author:** Santhosh Gandhi · **Version:** 2.0.0
 
 ---
 
-## Which version should I install?
+## Try Asking
 
-| I use... | Install this |
-|---|---|
-| [claude.ai](https://claude.ai) (web) | [Skill — one click install](#install-on-claudeai) |
-| Claude Code (terminal) | [Plugin — two command install](#install-on-claude-code) |
+```
+■ Will Elon Musk become president of USA by 2032?
+■ Will India become the global AI leader by 2050?
+■ Who will win the AI race — OpenAI or Anthropic?
+■ Will UPI become Southeast Asia's default payment rail by 2028?
+■ Will EVs dominate Indian cities by 2032?
+■ Will crypto replace banks by 2035?
+■ Will remote work become permanent by 2027?
+■ Will Europe lead the green energy transition by 2035?
+```
 
 ---
 
-## Install on claude.ai
+## Two Modes
 
-1. Go to [claude.ai](https://claude.ai) → **Profile** → **Skills**
-2. Click **Add Skill from GitHub**
-3. Enter: `https://github.com/isanthoshgandhi/foresight-engine`
-4. Done — start a new conversation and ask:
-
-```
-Foresight analysis: Will generative AI replace junior software engineers in India by 2028?
-```
+| | Soft Predict | Hard Predict |
+|---|---|---|
+| **How** | Claude-native — just ask a question | Say "run hard predict: [question]" |
+| **Scoring** | Claude estimates using the formula | Python computes deterministically |
+| **Reproducibility** | ±2–5% variance per run | Identical every run |
+| **Audit trail** | Claude reasoning (implicit) | JSON files for every step |
+| **Best for** | Exploration, quick reads, content | VC memos, high-stakes decisions |
 
 ---
 
@@ -38,53 +43,73 @@ claude plugin marketplace add https://github.com/isanthoshgandhi/foresight-engin
 claude plugin install foresight-engine
 ```
 
-Then use the commands:
+Then just ask any future question — Soft Predict activates automatically.
 
+For Hard Predict say:
 ```
-/foresight-engine:analyze Will EVs dominate Indian cities by 2032?
-/foresight-engine:quick   Will crypto replace banks by 2030?
-/foresight-engine:region  Will US tech regulation fragment the internet by 2030?
-/foresight-engine:india   Will UPI become Southeast Asia's payment standard by 2028?
+Run hard predict: Will India become the global AI leader by 2050?
 ```
 
 ---
 
-## Commands (Claude Code)
+## What You Get
 
-| Command | What it does |
+Every run — both modes — always outputs the same complete report:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FORESIGHT ENGINE
+[Query]
+Confidence: [X]/100 | Signals: [N] | [Date]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SIGNAL PULSE         — supporting / opposing / wildcard counts + visual bars
+STRUCTURAL DRIVERS   — D1, D2, D3 with stability rating
+CROSS-IMPACT         — convergence and friction across time horizons
+HISTORICAL MATCH     — best analogue + similarity score
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+■ PROBABLE  [X%]     — most likely trajectory
+■ PLAUSIBLE [X%]     — credible alternative
+■ POSSIBLE  [X%]     — low-probability but real
+■ PREFERABLE         — designed future with IFTF backcasting
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+THE ONE THING        — the single variable that determines which scenario activates
+DECISION GUIDANCE    — recommended stance, low-regret move, risk trigger
+REGIONAL LENS        — India / USA / Europe / China multipliers
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+---
+
+## How It Works
+
+**9-step pipeline (Soft Predict — Claude runs all steps natively):**
+
+1. **Validate** — 5-rule check: entity real, system observable, time horizon set, signals available, question specific
+2. **Collect signals** — 6 web searches, minimum 18 signals, all classified by STEEEP + temporal + type
+3. **Score signals** — 4-factor formula: recency × reliability × type × evidence, regional multipliers applied
+4. **Extract drivers** — top 3 structural forces behind the signal clusters, ranked by score sum
+5. **Build STEEEP matrix** — 18-cell grid: 6 categories × 3 time horizons
+6. **Cross-impact analysis** — convergence and friction points across temporal layers
+7. **Find analogues** — 3 real historical cases, similarity scored, mapped to drivers
+8. **Compute probabilities + confidence** — normalized to sum exactly to 100%
+9. **Write scenarios + report** — PROBABLE / PLAUSIBLE / POSSIBLE + PREFERABLE with IFTF backcasting
+
+**Hard Predict** runs the same pipeline with Python handling steps 1, 3, 5, 8, and report formatting deterministically.
+
+---
+
+## IFTF Methodology
+
+This plugin implements the [Institute for the Future](https://www.iftf.org) futures research framework:
+
+| IFTF Concept | Implementation |
 |---|---|
-| `/foresight-engine:analyze` | Get a full strategic forecast — 4 scenarios, probability scores, and a clear action recommendation. *e.g. Will EVs dominate Indian cities by 2032?* |
-| `/foresight-engine:quick` | Fast read on any future question in under a minute — see how evidence stacks up with a quick probability estimate. *e.g. Will remote work become permanent by 2027?* |
-| `/foresight-engine:region` | Full forecast with deep regional context for India, USA, Europe or China. *e.g. Will US tech regulation fragment the internet by 2030?* |
-| `/foresight-engine:india` | Full forecast built specifically for India — extra research on Indian policy, UPI/DPI, and startup ecosystem. *e.g. Will UPI become Southeast Asia's payment standard by 2028?* |
-
----
-
-## What you get
-
-A four-scenario intelligence report:
-
-- **PROBABLE** — Most likely path (>=50%)
-- **PLAUSIBLE** — Credible alternative (~30%)
-- **POSSIBLE** — Low-probability but real (~15%)
-- **PREFERABLE** — Best-case if conditions align (~5%)
-
-Each scenario includes: key drivers, supporting evidence, historical analogues, probability score, and decision guidance.
-
----
-
-## How it works
-
-The pipeline runs 8 steps:
-
-1. **Validate** — confirms the query is specific, real, and signal-researchable
-2. **Collect signals** — web search for 18+ real-world signals
-3. **Score signals** — 4-factor formula: recency x reliability x type x evidence
-4. **Build STEEEP matrix** — 18-cell grid across 6 categories x 3 time horizons
-5. **Regional context** — multipliers for India, USA, Europe, China
-6. **Compute probabilities** — normalized to sum exactly to 100%
-7. **Decision guidance** — stance, low-regret move, risk trigger
-8. **Format report** — crisp four-scenario output
+| Futures Cone | PROBABLE / PLAUSIBLE / POSSIBLE / PREFERABLE |
+| Three Horizons | Operational (0–3yr) / Strategic (3–10yr) / Civilizational (10+yr) |
+| STEEEP Scan | 6-category signal collection and matrix |
+| Signals → Drivers | Step 4: extract structural forces from signal clusters |
+| Backcasting | PREFERABLE scenario works backwards from desired future |
+| Action Implications | DECISION GUIDANCE: stance, low-regret move, risk trigger |
 
 ---
 
