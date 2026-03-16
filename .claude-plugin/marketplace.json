@@ -10,7 +10,7 @@
   },
   "plugins": [
     {
-      "name": "foresight-engine",
+      "name": "foresight-intelligence",
       "source": "./",
       "description": "Strategic foresight engine using IFTF methodology. Soft Predict Future (skill, instant) + Hard Predict Future (12-step agent, Python-computed). STEEEP matrix, structural drivers, historical analogues, four independent futures (Probable/Plausible/Possible/Preferable) with per-stakeholder conditional analysis.",
       "version": "2.2.0",
@@ -18,8 +18,8 @@
         "name": "Santhosh Gandhi",
         "email": "isanthoshgandhi@gmail.com"
       },
-      "homepage": "https://github.com/isanthoshgandhi/foresight-engine",
-      "repository": "https://github.com/isanthoshgandhi/foresight-engine",
+      "homepage": "https://github.com/isanthoshgandhi/foresight-intelligence",
+      "repository": "https://github.com/isanthoshgandhi/foresight-intelligence",
       "license": "MIT",
       "keywords": ["foresight", "strategy", "VC", "startup", "scenarios", "STEEEP", "futures", "IFTF"],
       "category": "productivity"
