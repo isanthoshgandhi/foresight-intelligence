@@ -1,6 +1,6 @@
 # Foresight Intelligence
 
-> Strategic foresight engine using IFTF methodology. Two modes: **Soft Predict Future** (Claude-native skill, instant, works on claude.ai) and **Hard Predict Future** (deterministic 12-step agent, Python-computed, auditable — requires Claude Code). Structural drivers, cross-impact analysis, IFTF backcasting, four independent futures with per-stakeholder conditional analysis. **Year is optional** — ask any future question and the engine infers the right time horizon.
+> Strategic foresight engine using IFTF methodology. Two modes: **Soft Predict Future** (Claude-native skill, instant, works on claude.ai) and **Hard Predict Future** (deterministic 12-step pipeline, Python-computed, auditable — requires Claude Code). Structural drivers, cross-impact analysis, IFTF backcasting, four independent futures with per-stakeholder conditional analysis. **Year is optional** — ask any future question and the engine infers the right time horizon.
 >
 > **Author:** Santhosh Gandhi · **Version:** 2.2.0
 
@@ -116,7 +116,7 @@ METHODOLOGY KEY      — one-line explanation of every score and formula
 8. **Compute predictions + confidence** — 3 independent scores (0–100 each, do NOT sum to 100); confidence penalizes blind spots
 9. **Write scenarios + report** — PROBABLE / PLAUSIBLE / POSSIBLE + PREFERABLE with IFTF backcasting
 
-**Hard Predict** runs the same pipeline with Python handling steps 1, 3, 5, 8, and report formatting deterministically.
+**Hard Predict** extends to 12 steps with Python handling steps 1, 3, 5, 8, 9, 10, 12 deterministically (confidence, decision guidance, and report formatting each get their own dedicated step).
 
 ---
 
