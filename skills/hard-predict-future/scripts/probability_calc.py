@@ -18,6 +18,7 @@ Output: probabilities.json to stdout + writes file
 """
 
 from __future__ import annotations
+import math
 import os
 import sys
 # Ensure scripts directory is on path so signal_scorer can be imported from any CWD
@@ -44,14 +45,17 @@ class Analogue:
 
 @dataclass
 class ProbabilityResult:
-    """Normalised probability distribution across three scenario types."""
-    probable_pct:  float    # % (normalised, sums to 100 with others)
-    plausible_pct: float
-    possible_pct:  float
-    probable_raw:  float    # raw before normalisation
-    plausible_raw: float
-    possible_raw:  float
-    confidence:    int      # 0–100 integer
+    """Independent confidence scores for each future type (0–100 each, do NOT sum to 100).
+    Each score reflects how strongly the evidence supports that future type independently.
+    Futures cone methodology: a scenario can be 80% Probable AND 60% Plausible simultaneously.
+    """
+    probable_score:  int     # independent confidence 0–100
+    plausible_score: int
+    possible_score:  int
+    probable_raw:    float   # raw score before scaling
+    plausible_raw:   float
+    possible_raw:    float
+    confidence:      int     # overall evidence confidence 0–100
 
 
 # ─── RAW SCORE CALCULATORS ───────────────────────────────────────────────────
@@ -127,21 +131,24 @@ def _possible_raw(
     return (wildcard_count * 2) + (low_similarity * 3)
 
 
-# ─── NORMALIZATION ────────────────────────────────────────────────────────────
+# ─── INDEPENDENT SCORING ──────────────────────────────────────────────────────
 
-def _normalize(probable: float, plausible: float, possible: float):
+def _to_independent_score(raw: float, scale: float) -> int:
     """
-    Normalise three raw scores to sum to 100%.
-    Returns equal distribution (33.3 / 33.3 / 33.4) when all are zero.
-    """
-    total = probable + plausible + possible
-    if total == 0:
-        return 33.3, 33.3, 33.4
+    Map a raw score to an independent confidence level (0–100).
+    Each future type is scored independently — they do NOT sum to 100%.
 
-    p1 = round((probable  / total) * 100, 1)
-    p2 = round((plausible / total) * 100, 1)
-    p3 = round(100.0 - p1 - p2, 1)
-    return p1, p2, p3
+    Uses exponential growth curve: rises quickly at low raw scores, levels off at high.
+    A scenario can score high on multiple future types simultaneously (futures cone logic).
+
+    Scale calibration:
+      probable  (scale=18): raw≈10→43%  raw≈20→67%  raw≈40→89%
+      plausible (scale=9):  raw≈5 →43%  raw≈10→67%  raw≈20→89%
+      possible  (scale=5):  raw≈3 →45%  raw≈6 →70%  raw≈10→86%
+    """
+    if raw <= 0:
+        return 0
+    return min(100, max(0, int(round((1.0 - math.exp(-raw / scale)) * 100))))
 
 
 # ─── CONFIDENCE SCORE ────────────────────────────────────────────────────────
@@ -181,7 +188,11 @@ def calculate_confidence(
     # 3. Historical grounding (0–30)
     grounding = (max(0.0, min(100.0, analogue_similarity)) / 100.0) * 30.0
 
-    return min(100, int(round(density + balance + grounding)))
+    # 4. Blind spot penalty (0–15): deduct for uncovered STEEEP×Temporal cells
+    blind_count   = len(matrix.blind_zones) if hasattr(matrix, 'blind_zones') else 0
+    blind_penalty = min(15.0, blind_count * (15.0 / 18.0))
+
+    return min(100, max(0, int(round(density + balance + grounding - blind_penalty))))
 
 
 # ─── MAIN ENTRY POINT ────────────────────────────────────────────────────────
@@ -208,15 +219,17 @@ def calculate_probabilities(
     pla_raw   = _plausible_raw(scored_signals, analogues)
     pos_raw   = _possible_raw(scored_signals, analogues)
 
-    prob_pct, pla_pct, pos_pct = _normalize(prob_raw, pla_raw, pos_raw)
+    prob_score = _to_independent_score(prob_raw, scale=18.0)
+    pla_score  = _to_independent_score(pla_raw,  scale=9.0)
+    pos_score  = _to_independent_score(pos_raw,  scale=5.0)
 
     best_sim = max((a.similarity_score for a in analogues), default=0.0)
     conf     = calculate_confidence(matrix, matrix.signal_counts, best_sim)
 
     return ProbabilityResult(
-        probable_pct=prob_pct,
-        plausible_pct=pla_pct,
-        possible_pct=pos_pct,
+        probable_score=prob_score,
+        plausible_score=pla_score,
+        possible_score=pos_score,
         probable_raw=prob_raw,
         plausible_raw=pla_raw,
         possible_raw=pos_raw,
@@ -301,16 +314,16 @@ def main():
 
     # Determine dominant scenario
     probs = {
-        "PROBABLE": result_obj.probable_pct,
-        "PLAUSIBLE": result_obj.plausible_pct,
-        "POSSIBLE": result_obj.possible_pct,
+        "PROBABLE": result_obj.probable_score,
+        "PLAUSIBLE": result_obj.plausible_score,
+        "POSSIBLE": result_obj.possible_score,
     }
     dominant = max(probs, key=probs.get)
 
     result = {
-        "probable_pct": result_obj.probable_pct,
-        "plausible_pct": result_obj.plausible_pct,
-        "possible_pct": result_obj.possible_pct,
+        "probable_score":  result_obj.probable_score,
+        "plausible_score": result_obj.plausible_score,
+        "possible_score":  result_obj.possible_score,
         "momentum_applied": momentum_applied,
         "dominant_scenario": dominant,
         "confidence": result_obj.confidence,

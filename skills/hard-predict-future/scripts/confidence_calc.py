@@ -81,7 +81,11 @@ def calculate_confidence(
     # 3. Historical grounding (0–30)
     grounding = (max(0.0, min(100.0, analogue_similarity)) / 100.0) * 30.0
 
-    return min(100, int(round(density + balance + grounding)))
+    # 4. Blind spot penalty (0–15): deduct for uncovered STEEEP×Temporal cells
+    blind_count   = len(matrix.blind_zones) if hasattr(matrix, 'blind_zones') else 0
+    blind_penalty = min(15.0, blind_count * (15.0 / 18.0))
+
+    return min(100, max(0, int(round(density + balance + grounding - blind_penalty))))
 
 
 # ─── CLI ENTRY POINT ─────────────────────────────────────────────────────────

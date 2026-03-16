@@ -179,9 +179,9 @@ Wait for exact stdout JSON. Script writes `probabilities.json`. Use returned dat
 
 Apply convergence bonus from Step 6:
 ```
-adjusted_probable = probabilities.probable_pct + convergence_bonus
+adjusted_probable_score = min(100, probabilities.probable_score + convergence_bonus)
 ```
-Re-normalize if adjusted total ≠ 100.
+No re-normalization needed — scores are independent, not a pie chart.
 
 ---
 
@@ -294,7 +294,14 @@ The canonical output template is:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 HARD PREDICT FUTURE · FORESIGHT ENGINE
 [Query]
-VERDICT: [Direct answer — one sentence, no hedging. State what will most likely happen.]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PREDICTIONS
+■ Probable  [[X]/100] [████████████░░░░░░░░] — [one sentence, no hedging]
+■ Plausible [[X]/100] [████████░░░░░░░░░░░░] — [one sentence, no hedging]
+■ Possible  [[X]/100] [████░░░░░░░░░░░░░░░░] — [one sentence, no hedging]
+■ Preferable          [stakeholder analysis below]
+
 Confidence: [X]/100 | Signals: [N] | Horizon: [YYYY–YYYY] | [YYYY-MM-DD]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -303,6 +310,15 @@ Supporting [N] [████████████░░░░░░░░] | 
 Net: [SUPPORTING LEADS / OPPOSING LEADS / NEUTRAL]
 Hot zone: [dominant STEEEP×Temporal cell]
 Gap: [uncovered STEEEP categories or "None — full coverage"]
+
+STEEEP MATRIX  ·  Cell intensity = signal score (★ hot >1.0  ● warm >0.5  ✗ blind spot)
+                    Operational    Strategic      Civilizational
+Social              [score] [★/●/·/✗]  [score] [★/●/·/✗]  [score] [★/●/·/✗]
+Technological       [score] [★/●/·/✗]  [score] [★/●/·/✗]  [score] [★/●/·/✗]
+Economic            [score] [★/●/·/✗]  [score] [★/●/·/✗]  [score] [★/●/·/✗]
+Environmental       [score] [★/●/·/✗]  [score] [★/●/·/✗]  [score] [★/●/·/✗]
+Ethical             [score] [★/●/·/✗]  [score] [★/●/·/✗]  [score] [★/●/·/✗]
+Political           [score] [★/●/·/✗]  [score] [★/●/·/✗]  [score] [★/●/·/✗]
 
 STRUCTURAL DRIVERS  ·  Deep forces shaping the outcome, ranked by signal weight
 D1 [Name] — [Force] ([Stability: LOCKED / SHIFTING / FRAGILE])
@@ -355,6 +371,32 @@ DRIVER: D[n]
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+PREFERABLE FUTURES  ·  Per major stakeholder — conditions required, constraints, outcomes
+
+For each major player identified in the query, write:
+  [Player name]:
+    Wins IF  → [specific condition that must be created or occur]
+    BUT ONLY → [binding constraint that must also be satisfied]
+    ONLY THEN → [the outcome that becomes possible]
+
+Example format:
+  Google:
+    Wins IF  → Gemini Search integration ships before Q4 2025
+    BUT ONLY → Privacy-preserving model survives regulatory scrutiny
+    ONLY THEN → Ad revenue model transitions successfully to AI-era search
+
+  Perplexity:
+    Wins IF  → Secures browser or device distribution deal
+    BUT ONLY → Raises next funding round before 18-month runway expires
+    ONLY THEN → Escapes power-user ceiling and reaches mass market
+
+  Users/Consumers:
+    Wins IF  → Either player is forced to compete on accuracy, not engagement
+    BUT ONLY → Antitrust pressure prevents acquisition of the challenger
+    ONLY THEN → Search quality improves and answer reliability increases
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 THE ONE THING
 [One sentence: the single variable that determines which scenario activates]
 INCIDENT: [real past event showing this variable's power]
@@ -376,14 +418,16 @@ Key local variable: [one sentence on dominant local structural factor]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 METHODOLOGY KEY
-Signal scoring    · Reliability tier (T1–T5) × recency weight × evidence type → final_score 0–1
-STEEEP matrix     · 6 categories × 3 time horizons = 18 cells; each cell scored by signal density
+Signal scoring    · Reliability tier × recency weight × evidence type → final_score 0–1
+STEEEP matrix     · 6 categories × 3 time horizons = 18 cells; ★ hot (>1.0) ● warm (>0.5) ✗ blind
 Structural drivers· Signal clusters grouped by STEEEP; top 3 by summed final_score
 Cross-impact      · Convergence (≥2 hot zones/layer), Isolated (1), Blind Layer (0)
 Historical match  · Claude searches for real precedents; similarity_score 0–100 assessed per analogue
-Probability split · PROBABLE / PLAUSIBLE / POSSIBLE scored by signal strength + analogue similarity, normalized to 100%
-Confidence        · Signal density (0–40) + evidence balance (0–30) + historical grounding (0–30)
+Predictions       · PROBABLE / PLAUSIBLE / POSSIBLE are independent scores (0–100 each, do NOT sum to 100)
+                    Futures cone methodology: a scenario can score high on multiple types simultaneously
+Confidence        · Signal density (0–40) + evidence balance (0–30) + historical grounding (0–30) − blind spot penalty (0–15)
 Decision guidance · Deterministic rule tree over probabilities.json + matrix.json → act / wait / hedge
+Preferable futures· Per stakeholder: Wins IF [condition] BUT ONLY [constraint] ONLY THEN [outcome]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 

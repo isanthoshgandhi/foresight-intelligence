@@ -236,7 +236,10 @@ Prefer analogues with similarity ≥ 60%. If none exceed 60%, note as a confiden
 
 ### Step 8 — Compute Probabilities + Confidence
 
-#### Probability
+#### Predictions — Independent Confidence Scores
+
+Each future type is scored independently (0–100). They do NOT sum to 100%.
+Futures cone methodology: a scenario can be 80% Probable AND 60% Plausible simultaneously.
 
 ```
 R_probable  = (supporting signals with score > 0.70) × 3
@@ -252,12 +255,11 @@ R_possible  = (wildcard signals) × 2
             + (gap zones / 18) × 3
 ```
 
-Normalize:
+Convert to independent scores (exponential curve, not normalization):
 ```
-total = R_probable + R_plausible + R_possible
-probable_pct  = round(R_probable  / total × 100, 1)
-plausible_pct = round(R_plausible / total × 100, 1)
-possible_pct  = 100 - probable_pct - plausible_pct
+probable_score  = min(100, round((1 - e^(-R_probable  / 18)) × 100))
+plausible_score = min(100, round((1 - e^(-R_plausible / 9))  × 100))
+possible_score  = min(100, round((1 - e^(-R_possible  / 5))  × 100))
 ```
 
 #### Confidence
@@ -304,15 +306,15 @@ DRIVER:   [Which structural driver (D1/D2/D3) this path depends on most]
 #### Decision Guidance (deterministic logic)
 
 ```
-IF probable_pct > 50:
+IF probable_score > 60:
     stance = "Align with probable scenario trajectory"
     low_regret = "Invest in capability building in the dominant hot zone"
 
-ELIF plausible_pct > 35:
+ELIF plausible_score > 50:
     stance = "Hedge between probable and plausible scenarios"
     low_regret = "Choose reversible commitments that work in both"
 
-ELIF possible_pct > 25:
+ELIF possible_score > 40:
     stance = "Maintain optionality — signal environment is ambiguous"
     low_regret = "Invest in monitoring and early-warning indicators"
 
@@ -335,7 +337,14 @@ Risk trigger: the opposing signal with the highest final_score.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 SOFT PREDICT FUTURE  ·  FORESIGHT ENGINE
 [Query]
-VERDICT: [One direct sentence answering the query — no hedging, no "it depends"]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PREDICTIONS
+■ Probable  [[X]/100] [████████████░░░░░░░░] — [one sentence, no hedging]
+■ Plausible [[X]/100] [████████░░░░░░░░░░░░] — [one sentence, no hedging]
+■ Possible  [[X]/100] [████░░░░░░░░░░░░░░░░] — [one sentence, no hedging]
+■ Preferable          [stakeholder analysis below]
+
 Confidence: [X]/100  |  Signals: [N]  |  Horizon: [YYYY–YYYY]  |  [YYYY-MM-DD]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -404,6 +413,26 @@ DRIVER: D[n]
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+PREFERABLE FUTURES  ·  Per major stakeholder
+— For each major player in the query, state the conditions required for their preferred outcome
+
+[Player A]:
+  Wins IF  → [specific condition that must be created or occur]
+  BUT ONLY → [binding constraint that must also be satisfied]
+  ONLY THEN → [the outcome that becomes possible]
+
+[Player B]:
+  Wins IF  → [specific condition]
+  BUT ONLY → [binding constraint]
+  ONLY THEN → [outcome]
+
+[Users/Society — always include]:
+  Wins IF  → [condition for best collective outcome]
+  BUT ONLY → [constraint]
+  ONLY THEN → [outcome]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 THE ONE THING
 — The single variable whose presence or absence determines which scenario actually unfolds
 [One sentence naming the deciding variable]
@@ -427,13 +456,30 @@ Key local variable: [One sentence on the dominant local structural factor]
 
 METHODOLOGY KEY
 Signal score (0–1)     Recency × source reliability × signal type × evidence strength — higher = fresher, better-sourced, stronger evidence
-Confidence (0–100)     30% signal volume + 30% STEEEP diversity + 20% recency + 20% evidence quality — reflects how well the signal base covers the question
-Probability split       Derived from weighted signal counts + historical analogue similarity — not a poll, a structured evidence calculation
-STEEEP matrix          6 domains × 3 time horizons — cells above 0.50 are "hot" (structurally active); gaps mean blind spots in the evidence
+Confidence (0–100)     Signal density (0–40) + evidence balance (0–30) + historical grounding (0–30) − blind spot penalty (0–15)
+Predictions            PROBABLE / PLAUSIBLE / POSSIBLE are independent scores (0–100 each, do NOT sum to 100)
+                       Futures cone: a scenario can score high on multiple types simultaneously
+STEEEP matrix          6 domains × 3 time horizons — ★ hot (>1.0) ● warm (>0.5) ✗ blind spot (0)
 Historical similarity   Structural pattern match to real past transitions — 60%+ is reliable precedent; below 40% is weak grounding
-Convergence bonus      +5% added to Probable when 2+ STEEEP domains reinforce each other in the Strategic layer
+Convergence bonus      +5 added to Probable score when 2+ STEEEP domains reinforce each other in the Strategic layer
 Stability tiers        LOCKED = unlikely to change in 10yr | SHIFTING = could change in 3–5yr | FRAGILE = could reverse in 1–2yr
+Preferable futures     Per stakeholder: Wins IF [condition] BUT ONLY [constraint] ONLY THEN [outcome]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+---
+
+## Visual Output (claude.ai with Artifacts)
+
+If running on claude.ai and Artifacts are enabled, after the text report generate an HTML Artifact:
+
+```html
+<!-- Render a visual foresight report with:
+  1. Predictions bar chart — horizontal bars for Probable/Plausible/Possible scores
+  2. STEEEP matrix — 6×3 color-coded table (darker green = hotter cell, red = blind spot)
+  3. Futures cone — SVG diagram showing 4 scenario bands expanding from present to horizon
+  4. Stakeholder preferable cards — one card per player with Wins IF / BUT ONLY / ONLY THEN
+  Use inline CSS only. No external dependencies. Dark background (#0f0f0f), accent color #00d4aa.
+-->
 ```
 
 ---

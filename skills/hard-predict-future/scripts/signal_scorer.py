@@ -30,6 +30,69 @@ STEEEP_CATEGORIES = [
 TEMPORAL_LAYERS = ["Operational", "Strategic", "Civilizational"]
 SIGNAL_TYPES = ["SUPPORTING", "OPPOSING", "NEUTRAL", "WILDCARD"]
 
+# ─── ALIAS NORMALIZATION ───────────────────────────────────────────────────────
+# Maps common Claude hallucination variants → canonical values
+# Prevents silent KeyErrors when LLM outputs "Tech" instead of "Technological"
+
+_STEEEP_ALIASES: Dict[str, str] = {
+    "tech": "Technological", "technology": "Technological", "technological": "Technological",
+    "econ": "Economic", "economy": "Economic", "economic": "Economic", "financial": "Economic",
+    "env": "Environmental", "environment": "Environmental", "environmental": "Environmental",
+    "eth": "Ethical", "ethic": "Ethical", "ethical": "Ethical", "legal": "Ethical",
+    "pol": "Political", "politics": "Political", "political": "Political", "governance": "Political",
+    "soc": "Social", "society": "Social", "social": "Social", "demographic": "Social",
+}
+
+_TEMPORAL_ALIASES: Dict[str, str] = {
+    "operational": "Operational", "op": "Operational", "short": "Operational",
+    "short-term": "Operational", "short term": "Operational", "near-term": "Operational",
+    "strategic": "Strategic", "strat": "Strategic", "medium": "Strategic",
+    "medium-term": "Strategic", "medium term": "Strategic",
+    "civilizational": "Civilizational", "civilisational": "Civilizational",
+    "civ": "Civilizational", "long": "Civilizational",
+    "long-term": "Civilizational", "long term": "Civilizational",
+}
+
+_SIGNAL_TYPE_ALIASES: Dict[str, str] = {
+    "supporting": "SUPPORTING", "support": "SUPPORTING", "positive": "SUPPORTING",
+    "bullish": "SUPPORTING", "favorable": "SUPPORTING", "favourable": "SUPPORTING",
+    "opposing": "OPPOSING", "oppose": "OPPOSING", "negative": "OPPOSING",
+    "bearish": "OPPOSING", "against": "OPPOSING", "headwind": "OPPOSING",
+    "wildcard": "WILDCARD", "wild": "WILDCARD", "black swan": "WILDCARD",
+    "disruptive": "WILDCARD", "wild card": "WILDCARD",
+    "neutral": "NEUTRAL", "mixed": "NEUTRAL", "ambiguous": "NEUTRAL",
+}
+
+
+def _normalize_steeep(value: str) -> Optional[str]:
+    """Normalize a STEEEP category string to its canonical form. Returns None if unrecognizable."""
+    if not value:
+        return None
+    v = value.strip()
+    if v in STEEEP_CATEGORIES:
+        return v
+    return _STEEEP_ALIASES.get(v.lower())
+
+
+def _normalize_temporal(value: str) -> Optional[str]:
+    """Normalize a temporal layer string to its canonical form. Returns None if unrecognizable."""
+    if not value:
+        return None
+    v = value.strip()
+    if v in TEMPORAL_LAYERS:
+        return v
+    return _TEMPORAL_ALIASES.get(v.lower())
+
+
+def _normalize_signal_type(value: str) -> Optional[str]:
+    """Normalize a signal type string to its canonical form. Returns None if unrecognizable."""
+    if not value:
+        return None
+    v = value.strip().upper()
+    if v in SIGNAL_TYPES:
+        return v
+    return _SIGNAL_TYPE_ALIASES.get(value.strip().lower())
+
 
 @dataclass
 class Signal:
@@ -278,10 +341,12 @@ _STEEEP_KW: Dict[str, List[str]] = {
 def _classify_steeep(content: str, provided: Optional[str]) -> str:
     """
     Classify signal into STEEEP category.
-    Uses provided value if valid, else infers from content keywords.
+    Uses provided value if valid (with alias normalization), else infers from content keywords.
     """
-    if provided and provided in STEEEP_CATEGORIES:
-        return provided
+    if provided:
+        normalized = _normalize_steeep(provided)
+        if normalized:
+            return normalized
     cl = content.lower()
     scores = {cat: 0 for cat in STEEEP_CATEGORIES}
     for cat, kws in _STEEEP_KW.items():
@@ -318,10 +383,12 @@ _TEMPORAL_KW: Dict[str, List[str]] = {
 def _classify_temporal(content: str, provided: Optional[str]) -> str:
     """
     Classify signal into temporal layer.
-    Uses provided value if valid, else infers from content keywords.
+    Uses provided value if valid (with alias normalization), else infers from content keywords.
     """
-    if provided and provided in TEMPORAL_LAYERS:
-        return provided
+    if provided:
+        normalized = _normalize_temporal(provided)
+        if normalized:
+            return normalized
     cl = content.lower()
     scores = {layer: 0 for layer in TEMPORAL_LAYERS}
     for layer, kws in _TEMPORAL_KW.items():
@@ -359,10 +426,12 @@ _SUPPORTING_KW = [
 def _classify_signal_type(content: str, provided: Optional[str]) -> str:
     """
     Classify signal as SUPPORTING / OPPOSING / NEUTRAL / WILDCARD.
-    Uses provided value if valid, else infers from content keywords.
+    Uses provided value if valid (with alias normalization), else infers from content keywords.
     """
-    if provided and provided.upper() in SIGNAL_TYPES:
-        return provided.upper()
+    if provided:
+        normalized = _normalize_signal_type(provided)
+        if normalized:
+            return normalized
 
     cl = content.lower()
 

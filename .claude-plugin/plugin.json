@@ -1,7 +1,7 @@
 {
   "name": "foresight-engine",
-  "description": "Strategic foresight engine using IFTF methodology. Two prediction modes bundled: Soft Predict Future (Claude-native skill, instant, works on claude.ai) and Hard Predict Future (deterministic 12-step agent, Python-computed, auditable — requires Claude Code). Both use STEEEP matrix, structural drivers, historical analogues, cross-impact analysis, and four-scenario output with VERDICT. Try: Will India become the global AI leader by 2050? Will OpenAI or Anthropic win by 2030?",
-  "version": "2.1.0",
+  "description": "Strategic foresight engine using IFTF methodology. Two prediction modes: Soft Predict Future (Claude-native skill, instant, claude.ai + Claude Code) and Hard Predict Future (deterministic 12-step agent, Python-computed — Claude Code only). Both output four independent futures (Probable/Plausible/Possible/Preferable) with per-stakeholder conditional analysis. Try: Will India become the global AI leader? Will OpenAI or Anthropic win?",
+  "version": "2.2.0",
   "author": {
     "name": "Santhosh Gandhi",
     "email": "isanthoshgandhi@gmail.com"
