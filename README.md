@@ -1,4 +1,4 @@
-# Foresight Engine
+# Foresight Intelligence
 
 > Strategic foresight engine using IFTF methodology. Two modes: **Soft Predict Future** (Claude-native skill, instant, works on claude.ai) and **Hard Predict Future** (deterministic 12-step agent, Python-computed, auditable — requires Claude Code). Structural drivers, cross-impact analysis, IFTF backcasting, four independent futures with per-stakeholder conditional analysis. **Year is optional** — ask any future question and the engine infers the right time horizon.
 >
@@ -40,10 +40,10 @@ Year is optional. The engine infers the right horizon from your question.
 
 ```bash
 # Step 1 — Add the marketplace (one-time setup)
-claude plugin marketplace add https://github.com/isanthoshgandhi/foresight-engine
+claude plugin marketplace add isanthoshgandhi/foresight-intelligence
 
 # Step 2 — Install the plugin
-claude plugin install foresight-engine
+claude plugin install foresight-intelligence
 ```
 
 Then just ask any future question — Soft Predict activates automatically.
@@ -55,7 +55,7 @@ Run hard predict: Will India become the global AI leader by 2050?
 
 To invoke explicitly by name:
 ```
-/foresight-engine:hard-predict-future Will OpenAI or Anthropic win by 2030?
+/foresight-intelligence:hard-predict-future Will OpenAI or Anthropic win by 2030?
 ```
 
 ---
@@ -66,7 +66,7 @@ Every run — both modes — always outputs the same complete report:
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[SOFT / HARD] PREDICT FUTURE · FORESIGHT ENGINE
+[SOFT / HARD] PREDICT FUTURE · FORESIGHT INTELLIGENCE
 [Query]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 PREDICTIONS
